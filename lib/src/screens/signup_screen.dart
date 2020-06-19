@@ -59,9 +59,9 @@ class _SignupScreenState extends State<SignupScreen> {
            AppButton(
              color: Colors.lightGreenAccent[400],
               name: "Signup",
-              onPressed: (){
+              onPressed: () async {
                 try{
-                  var newUser = auth.createUserWithEmailAndPassword(email: _email, password: _password);
+                  var newUser = await auth.createUserWithEmailAndPassword(email: _email, password: _password);
                   if(newUser != null){
                     Navigator.pushNamed(context, '/Chat');
                   }
