@@ -22,7 +22,13 @@ class Authentication{
     return null;
   }
 
-  
-
+  Future<AuthResult> loginUser({String email = "", String password =""}) async {
+    try{
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    }catch(e){
+      print(e);
+    }
+    return null;
+  }
   
 }

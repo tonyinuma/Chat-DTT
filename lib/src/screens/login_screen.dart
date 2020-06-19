@@ -1,3 +1,4 @@
+import 'package:chat_dtt/src/services/authentication.dart';
 import 'package:chat_dtt/src/widgets/app_button.dart';
 import 'package:chat_dtt/src/widgets/app_icon.dart';
 import 'package:chat_dtt/src/widgets/app_textfield.dart';
@@ -12,6 +13,9 @@ class LoginScreen extends StatefulWidget {
  }
 class _LoginScreenState extends State<LoginScreen> {
 
+  String _email;
+  String _password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +28,29 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             AppIcon(),
             SizedBox(height: 48.0,),
-            AppTextField(inputText:"Ingrese correo"),
+            AppTextField(
+              inputText:"Ingrese correo",
+              onChanged: (value) { 
+                _email = value;
+              },
+            ),
             SizedBox(height: 10.0,),
-            AppTextField(inputText:"Ingrese contraseña"),
+            AppTextField(
+              inputText:"Ingrese contraseña",
+              onChanged: (value) { 
+                _password = value;
+              },
+              obscureTextPass: true,
+            ),
             AppButton(
               color: Colors.lightGreenAccent[400],
               name: "Log In",
-              onPressed: (){}
+              onPressed:() async { 
+                  var user = await Authentication().loginUser(email: _email, password: _password);
+                  if(user != null){
+                    Navigator.pushNamed(context, '/Chat');
+                  } 
+              }
             )
 
           ],
