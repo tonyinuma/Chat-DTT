@@ -2,6 +2,7 @@ import 'package:chat_dtt/src/widget/app_button.dart';
 import 'package:chat_dtt/src/widget/app_icon.dart';
 import 'package:chat_dtt/src/widget/app_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
 
@@ -11,6 +12,8 @@ class SignupScreen extends StatefulWidget {
   _SignupScreenState createState() => new _SignupScreenState();
  }
 class _SignupScreenState extends State<SignupScreen> {
+
+  final auth = FirebaseAuth.instance;
 
   String _nombres;
   String _email;
@@ -57,7 +60,14 @@ class _SignupScreenState extends State<SignupScreen> {
              color: Colors.lightGreenAccent[400],
               name: "Signup",
               onPressed: (){
-                
+                try{
+                  var newUser = auth.createUserWithEmailAndPassword(email: _email, password: _password);
+                  if(newUser != null){
+                    Navigator.pushNamed(context, '/Chat');
+                  }
+                }catch(e){
+                  print(e);
+                }
               }
            )
          ],
