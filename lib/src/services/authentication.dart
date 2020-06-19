@@ -30,5 +30,14 @@ class Authentication{
     }
     return null;
   }
+
+  Future<void> logoutUser() async {
+    try{
+      return await _auth.signOut();
+    }catch(e){
+      print(e);
+    }
+    return null;
+  }
   
 }
