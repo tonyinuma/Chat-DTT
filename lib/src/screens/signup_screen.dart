@@ -56,7 +56,9 @@ class _SignupScreenState extends State<SignupScreen> {
            AppButton(
              color: Colors.lightGreenAccent[400],
               name: "Signup",
-              onPressed: (){}
+              onPressed: (){
+                
+              }
            )
          ],
        ),

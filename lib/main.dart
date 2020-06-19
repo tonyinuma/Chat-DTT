@@ -1,3 +1,4 @@
+import 'package:chat_dtt/src/screens/chat_screen.dart';
 import 'package:chat_dtt/src/screens/login_screen.dart';
 import 'package:chat_dtt/src/screens/signup_screen.dart';
 import 'package:chat_dtt/src/screens/welcome_screen.dart';
@@ -16,7 +17,8 @@ void main() {
       routes: <String, WidgetBuilder>{
         LoginScreen.routeName: (BuildContext context) => LoginScreen(),
         WelcomeScreen.routeName: (BuildContext context) => WelcomeScreen(),
-        SignupScreen.routeName: (BuildContext context) => SignupScreen()
+        SignupScreen.routeName: (BuildContext context) => SignupScreen(),
+        ChatScreen.routeName: (BuildContext context) => ChatScreen()
       }
     ),
   );
