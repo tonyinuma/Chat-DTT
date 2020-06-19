@@ -1,6 +1,7 @@
-import 'package:chat_dtt/src/widget/app_button.dart';
-import 'package:chat_dtt/src/widget/app_icon.dart';
-import 'package:chat_dtt/src/widget/app_textfield.dart';
+import 'package:chat_dtt/src/services/authentication.dart';
+import 'package:chat_dtt/src/widgets/app_button.dart';
+import 'package:chat_dtt/src/widgets/app_icon.dart';
+import 'package:chat_dtt/src/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -59,15 +60,11 @@ class _SignupScreenState extends State<SignupScreen> {
            AppButton(
              color: Colors.lightGreenAccent[400],
               name: "Signup",
-              onPressed: () async {
-                try{
-                  var newUser = await auth.createUserWithEmailAndPassword(email: _email, password: _password);
+              onPressed: () async { 
+                  var newUser = await Authentication().createUser(email: _email, password: _password);
                   if(newUser != null){
                     Navigator.pushNamed(context, '/Chat');
-                  }
-                }catch(e){
-                  print(e);
-                }
+                  } 
               }
            )
          ],

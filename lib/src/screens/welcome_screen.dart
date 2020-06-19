@@ -1,5 +1,5 @@
-import 'package:chat_dtt/src/widget/app_button.dart';
-import 'package:chat_dtt/src/widget/app_icon.dart';
+import 'package:chat_dtt/src/widgets/app_button.dart';
+import 'package:chat_dtt/src/widgets/app_icon.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
