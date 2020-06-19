@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatelessWidget {
 
   final String inputText;
-
-  const AppTextField({this.inputText});
+  final bool obscureTextPass;
+  final ValueChanged<String> onChanged;
+  const AppTextField({this.inputText, this.onChanged,this.obscureTextPass});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,9 @@ class AppTextField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.lightGreenAccent[400],width: 4)
         ),
       ),
+      obscureText: obscureTextPass == null ?  false : obscureTextPass,
+      onChanged: onChanged,
+      textAlign: TextAlign.center,
       style: TextStyle(
         color: Colors.white
       ),

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "739021643209",
+    "firebase_url": "https://dream-team-toxic-chat.firebaseio.com",
+    "project_id": "dream-team-toxic-chat",
+    "storage_bucket": "dream-team-toxic-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739021643209:android:adabae8771834ef25c5c18",
+        "android_client_info": {
+          "package_name": "com.dreamteamtoxic.chat_dtt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739021643209-2ov4orl2n7hlrui4tv8172dl1km4g4qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHZCo9uo7j1Sz4wDDiiwvCzZi93TCOiGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739021643209-2ov4orl2n7hlrui4tv8172dl1km4g4qo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
