@@ -5,11 +5,16 @@ class AppTextField extends StatelessWidget {
   final String inputText;
   final bool obscureTextPass;
   final ValueChanged<String> onChanged;
-  const AppTextField({this.inputText, this.onChanged,this.obscureTextPass});
+  final TextEditingController controller;
+  final FocusNode focusNode;
+
+  const AppTextField({this.inputText, this.onChanged,this.obscureTextPass,this.controller,this.focusNode});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: focusNode,
+      controller: controller,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
         hintText: inputText,

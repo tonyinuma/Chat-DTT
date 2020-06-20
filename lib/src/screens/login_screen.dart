@@ -16,6 +16,29 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email;
   String _password;
 
+  TextEditingController _emailController;
+  TextEditingController _passwordController;
+
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _focusNode = FocusNode();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _focusNode.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
               onChanged: (value) { 
                 _email = value;
               },
+              controller: _emailController,
+              focusNode: _focusNode,
             ),
             SizedBox(height: 10.0,),
             AppTextField(
@@ -41,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 _password = value;
               },
               obscureTextPass: true,
+              controller: _passwordController,
             ),
             AppButton(
               color: Colors.lightGreenAccent[400],
@@ -49,6 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   var user = await Authentication().loginUser(email: _email, password: _password);
                   if(user != null){
                     Navigator.pushNamed(context, '/Chat');
+                    _emailController.text = "";
+                    _passwordController.text = "";
+                    FocusScope.of(context).requestFocus(_focusNode);
                   } 
               }
             )
