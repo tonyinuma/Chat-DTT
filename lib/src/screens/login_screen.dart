@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with ValidationMixins{
 
   bool showSpinner = false;
+  bool _autoValidate = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController;
@@ -78,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationMixins{
 
   Widget _emailField(){
     return AppTextField(
+      autoValidate: _autoValidate,
       validator: validateEmail,
       inputText:"Ingrese correo",
       onChanged: (value) { },
@@ -88,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidationMixins{
 
   Widget _passwordField(){
     return AppTextField(
+      autoValidate: _autoValidate,
       validator: validatePassword,
       inputText:"Ingrese contraseña",
       onChanged: (value) { },
@@ -112,10 +115,9 @@ class _LoginScreenState extends State<LoginScreen> with ValidationMixins{
             FocusScope.of(context).requestFocus(_focusNode);
             setSpinnerStatus(false);
           } 
+        }else{
+          setState(() => _autoValidate = true );
         }
-
-        
-
       }
     );
   }

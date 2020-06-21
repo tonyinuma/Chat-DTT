@@ -1,8 +1,10 @@
+import 'package:chat_dtt/src/mixins/validation_mixins.dart';
 import 'package:chat_dtt/src/services/authentication.dart';
 import 'package:chat_dtt/src/widgets/app_button.dart';
 import 'package:chat_dtt/src/widgets/app_icon.dart';
 import 'package:chat_dtt/src/widgets/app_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class SignupScreen extends StatefulWidget {
 
@@ -11,11 +13,12 @@ class SignupScreen extends StatefulWidget {
   @override
   _SignupScreenState createState() => new _SignupScreenState();
  }
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends State<SignupScreen> with ValidationMixins{
 
-  /* String _nombres; */
-  String _email;
-  String _password;
+  bool _autoValidate = false;
+  bool showSpinner = false;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController;
   TextEditingController _passwordController;
@@ -40,62 +43,85 @@ class _SignupScreenState extends State<SignupScreen> {
     _passwordController.dispose();
   }
 
+  void setSpinnerStatus(bool status){
+    setState(() {
+      showSpinner = status;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            AppIcon(),
-            SizedBox(height: 48.0,),
-            /* AppTextField(
-              inputText:"Ingrese sus Nombres",
-              onChanged: (value) { 
-              _nombres = value; 
-              print("nombres : $_nombres"); 
-             },
-            ), */
-            SizedBox(height: 8.0,),
-            AppTextField(
-              inputText:"Ingrese correo",
-              onChanged: (value) { 
-                _email = value;
-                print("email : $_email"); 
-              },
-              controller: _emailController,
-              focusNode: _focusNode,
+      body: ModalProgressHUD(
+        color: Colors.lightGreenAccent[400],
+        inAsyncCall: showSpinner,
+        child: Form(
+          key: _formKey,
+          child:  Container(
+            color: Colors.black,
+            padding: EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                AppIcon(),
+                SizedBox(height: 48.0,),
+                _emailField(),
+                SizedBox(height: 8.0,),
+                _passwordField(),
+                SizedBox(height: 18.0,),
+                _submitButton()
+              ],
             ),
-            SizedBox(height: 8.0,),
-            AppTextField(
-              inputText:"Ingrese Password",
-              onChanged: (value) {
-                _password = value; 
-                print("passw : $_password");
-              },
-              obscureTextPass: true,
-              controller: _passwordController,
-            ),
-           SizedBox(height: 18.0,),
-           AppButton(
-             color: Colors.lightGreenAccent[400],
-              name: "Signup",
-              onPressed: () async { 
-                  var newUser = await Authentication().createUser(email: _email, password: _password);
-                  if(newUser != null){
-                    Navigator.pushNamed(context, '/Chat');
-                    _emailController.text = "";
-                    _passwordController.text = "";
-                    FocusScope.of(context).requestFocus(_focusNode);
-                  } 
-              }
-           )
-         ],
-       ),
-     ),
-   );
+          ),
+        )
+      )
+    );
   }
+
+  Widget _emailField(){
+    return AppTextField(
+      autoValidate: _autoValidate,
+      validator: validateEmail,
+      inputText:"Ingrese correo",
+      onChanged: (value) {},
+      controller: _emailController,
+      focusNode: _focusNode
+    );        
+  }
+
+  Widget _passwordField(){
+    return AppTextField(
+      autoValidate: _autoValidate,
+      validator: validatePassword,
+      inputText:"Ingrese contraseña",
+      onChanged: (value) {},
+      controller: _passwordController,
+      obscureTextPass: true,
+    );        
+  }
+
+  Widget _submitButton(){
+    return AppButton(
+      color: Colors.lightGreenAccent[400],
+      name: "Signup",
+      onPressed: () async { 
+        if(_formKey.currentState.validate()){
+          setSpinnerStatus(true);
+          var newUser = await Authentication().createUser(email: _emailController.text, 
+                                                          password: _passwordController.text);
+          if(newUser != null){
+            Navigator.pushNamed(context, '/Chat');
+            _emailController.text = "";
+            _passwordController.text = "";
+            FocusScope.of(context).requestFocus(_focusNode);
+          }
+
+        }else{
+          setState(() => _autoValidate = true );
+        }
+      }
+    );
+  }
+
 }
