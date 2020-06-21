@@ -7,5 +7,9 @@ class MessageService{
   void save({String collectionName, Map<String, dynamic> collectionValues}){
     _fireStore.collection(collectionName).add(collectionValues);
   }
+
+  Future<QuerySnapshot> getMessage() async{
+    return await _fireStore.collection("messages").getDocuments();
+  }
   
 }

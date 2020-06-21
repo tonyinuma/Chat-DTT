@@ -21,6 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
+    _getMessage();
   }
   void getCurrentUser() async{ 
       var user = await Authentication().getCurrentUser();
@@ -28,6 +29,13 @@ class _ChatScreenState extends State<ChatScreen> {
         loggedInUser = user;
         print(loggedInUser.email);
       } 
+  }
+
+  void _getMessage() async{
+    final messages = await MessageService().getMessage();
+    for (var message in messages.documents) {
+      print(message.data);
+    }
   }
 
   InputDecoration _messageTextFieldDecoration = InputDecoration(
