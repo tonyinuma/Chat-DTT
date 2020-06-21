@@ -1,4 +1,5 @@
 import 'package:chat_dtt/src/services/authentication.dart';
+import 'package:chat_dtt/src/services/message_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,8 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
  
   FirebaseUser loggedInUser;
+
+  TextEditingController _messageController = TextEditingController();
 
   @override
   void initState() {
@@ -71,11 +74,20 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       decoration: _messageTextFieldDecoration,
+                      controller: _messageController,
                     )
                   ),
                   FlatButton(
                     child: Text("Enviar", style: _sendButtonStyle,),
-                    onPressed: () {}, 
+                    onPressed: () {
+                      MessageService().save(
+                        collectionName: "messages",
+                        collectionValues: {
+                          'value': _messageController.text,
+                          'sender': loggedInUser.email
+                        }
+                      );
+                    }, 
                   ) 
                 ],
               )
