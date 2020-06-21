@@ -3,6 +3,7 @@ import 'package:chat_dtt/src/services/authentication.dart';
 import 'package:chat_dtt/src/widgets/app_button.dart';
 import 'package:chat_dtt/src/widgets/app_icon.dart';
 import 'package:chat_dtt/src/widgets/app_textfield.dart';
+import 'package:chat_dtt/src/widgets/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -17,7 +18,7 @@ class _SignupScreenState extends State<SignupScreen> with ValidationMixins{
 
   bool _autoValidate = false;
   bool showSpinner = false;
-
+  String _errorMessage = "";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController;
@@ -70,6 +71,7 @@ class _SignupScreenState extends State<SignupScreen> with ValidationMixins{
                 SizedBox(height: 8.0,),
                 _passwordField(),
                 SizedBox(height: 18.0,),
+                _showErrorMessage(),
                 _submitButton()
               ],
             ),
@@ -108,14 +110,17 @@ class _SignupScreenState extends State<SignupScreen> with ValidationMixins{
       onPressed: () async { 
         if(_formKey.currentState.validate()){
           setSpinnerStatus(true);
-          var newUser = await Authentication().createUser(email: _emailController.text, 
+          var auth = await Authentication().createUser(email: _emailController.text, 
                                                           password: _passwordController.text);
-          if(newUser != null){
+          if(auth.sucess){
             Navigator.pushNamed(context, '/Chat');
             _emailController.text = "";
             _passwordController.text = "";
             FocusScope.of(context).requestFocus(_focusNode);
+           }else{
+            setState(()=> _errorMessage = auth.errorMessage);
           }
+          setSpinnerStatus(false);
 
         }else{
           setState(() => _autoValidate = true );
@@ -124,4 +129,11 @@ class _SignupScreenState extends State<SignupScreen> with ValidationMixins{
     );
   }
 
+   Widget _showErrorMessage(){
+    if (_errorMessage.length > 0 && _errorMessage != null) {
+      return ErrorMessage(errorMessage: _errorMessage,);
+    }else{
+      return Container(height: 0.0,);
+    }
+  }
 }
