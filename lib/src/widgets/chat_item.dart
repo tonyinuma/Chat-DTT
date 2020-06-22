@@ -4,8 +4,9 @@ class ChatItem extends StatelessWidget {
 
   final String sender;
   final String message;
+  final bool isLoggedInUser;
 
-  ChatItem({this.sender,this.message});
+  ChatItem({this.sender,this.message,this.isLoggedInUser});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,13 @@ class ChatItem extends StatelessWidget {
             ),
           ),
           Material(
-            borderRadius: BorderRadius.circular(30.0),
-            color: Colors.lightGreenAccent[400],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              bottomLeft: Radius.circular(30.0),
+              bottomRight: Radius.circular(30.0)
+            ),
+            elevation: 5.0,
+            color: isLoggedInUser ? Colors.lightGreenAccent[400] : Colors.pinkAccent,
             child:Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Text(message,

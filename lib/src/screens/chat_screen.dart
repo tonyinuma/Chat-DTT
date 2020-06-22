@@ -83,17 +83,10 @@ class _ChatScreenState extends State<ChatScreen> {
             StreamBuilder(
               stream: MessageService().getMessageStream(),
               builder: (context, snapshot){
-                if(snapshot.hasData){
-                  var messages = snapshot.data.documents;
-                  List<ChatItem> chatItems = [];
-                  for (var message in messages) {
-                    final messageValue = message.data["value"];
-                    final messageSender = message.data["sender"];
-                    chatItems.add(ChatItem(message: messageValue, sender: messageSender,));
-                  }
+                if(snapshot.hasData){                  
                   return Flexible(
                     child: ListView(
-                      children: chatItems,
+                      children: _getChatItem(snapshot.data.documents),
                     )
                   );
                 }
@@ -120,6 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           'sender': loggedInUser.email
                         }
                       );
+                      _messageController.clear();
                     }, 
                   ) 
                 ],
@@ -130,4 +124,21 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  List<ChatItem> _getChatItem(dynamic messages){
+    List<ChatItem> chatItems = [];
+      for (var message in messages) {
+        final messageValue = message.data["value"];
+        final messageSender = message.data["sender"];
+        chatItems.add(
+          ChatItem(
+            message: messageValue, 
+            sender: messageSender,
+            isLoggedInUser: messageSender == loggedInUser.email
+          )
+        );
+      }
+    return chatItems;
+  }
+
 }
