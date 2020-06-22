@@ -12,4 +12,7 @@ class MessageService{
     return await _fireStore.collection("messages").getDocuments();
   }
   
+  Stream<QuerySnapshot> getMessageStream(){
+    return _fireStore.collection("messages").snapshots();
+  }
 }

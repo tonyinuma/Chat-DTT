@@ -31,10 +31,11 @@ class _ChatScreenState extends State<ChatScreen> {
       } 
   }
 
-  void _getMessage() async{
-    final messages = await MessageService().getMessage();
-    for (var message in messages.documents) {
-      print(message.data);
+  void _getMessage()async{
+     await for(var snapshot in MessageService().getMessageStream()) {
+      for (var message in snapshot.documents) {
+        print(message.data);
+      }
     }
   }
 
